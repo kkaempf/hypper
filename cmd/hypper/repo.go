@@ -24,6 +24,7 @@ func newRepoCmd(logger log.Logger) *cobra.Command {
 
 	cmd.AddCommand(
 		newRepoAddCmd(wInfo),
+		newRepoIndexCmd(wInfo),
 	)
 
 	return cmd
