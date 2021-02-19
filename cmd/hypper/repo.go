@@ -1,7 +1,10 @@
 package main
 
 import (
+	"os"
+
 	"github.com/Masterminds/log-go"
+	"github.com/pkg/errors"
 
 	logio "github.com/Masterminds/log-go/io"
 	"github.com/spf13/cobra"
@@ -23,9 +26,14 @@ func newRepoCmd(logger log.Logger) *cobra.Command {
 	}
 
 	cmd.AddCommand(
-		newRepoAddCmd(wInfo),
+		//newRepoAddCmd(wInfo),
+		newRepoListCmd(wInfo),
 		newRepoIndexCmd(wInfo),
 	)
 
 	return cmd
+}
+
+func isNotExist(err error) bool {
+	return os.IsNotExist(errors.Cause(err))
 }

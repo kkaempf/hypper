@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/mattfarina/hypper/internal/test/ensure"
+	"github.com/rancher-sandbox/hypper/internal/test/ensure"
 	"helm.sh/helm/v3/pkg/repo"
 )
 
