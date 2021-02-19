@@ -2,7 +2,6 @@ package main
 
 import (
 	"io"
-	"strings"
 
 	"github.com/gosuri/uitable"
 	"github.com/pkg/errors"
@@ -80,44 +79,4 @@ func (r *repoListWriter) encodeByFormat(out io.Writer, format output.Format) err
 	// Because this is a non-exported function and only called internally by
 	// WriteJSON and WriteYAML, we shouldn't get invalid types
 	return nil
-}
-
-// Returns all repos from repos, except those with names matching ignoredRepoNames
-// Inspired by https://stackoverflow.com/a/28701031/893211
-func filterRepos(repos []*repo.Entry, ignoredRepoNames []string) []*repo.Entry {
-	// if ignoredRepoNames is nil, just return repo
-	if ignoredRepoNames == nil {
-		return repos
-	}
-
-	filteredRepos := make([]*repo.Entry, 0)
-
-	ignored := make(map[string]bool, len(ignoredRepoNames))
-	for _, repoName := range ignoredRepoNames {
-		ignored[repoName] = true
-	}
-
-	for _, repo := range repos {
-		if _, removed := ignored[repo.Name]; !removed {
-			filteredRepos = append(filteredRepos, repo)
-		}
-	}
-
-	return filteredRepos
-}
-
-// Provide dynamic auto-completion for repo names
-func compListRepos(prefix string, ignoredRepoNames []string) []string {
-	var rNames []string
-
-	f, err := repo.LoadFile(settings.RepositoryConfig)
-	if err == nil && len(f.Repositories) > 0 {
-		filteredRepos := filterRepos(f.Repositories, ignoredRepoNames)
-		for _, repo := range filteredRepos {
-			if strings.HasPrefix(repo.Name, prefix) {
-				rNames = append(rNames, repo.Name)
-			}
-		}
-	}
-	return rNames
 }
